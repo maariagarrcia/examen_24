@@ -1,5 +1,5 @@
 
-from multiprocessing import Process,Lock,Pool
+from multiprocessing import Process, Lock, Pool
 from colorama import Fore
 import time
 
@@ -13,47 +13,44 @@ def arrancar_hilos(hilos) -> None:
     print()
 
 
-def crear_hilos_100(cantidad: int, contador: int, lock: Lock,c) -> list():
+def crear_hilos_100(cantidad: int, contador: int, lock: Lock, c) -> list():
     hilos = []
     print("* Creando hilos...")
     for i in range(0, cantidad):
-        hilo = Process(target=incrementar, args=[contador, lock,c])
+        hilo = Process(target=incrementar, args=[contador, lock, c])
         hilos.append(hilo)
 
-        hilo = Process(target=decrementar, args=[contador, lock,c])
+        hilo = Process(target=decrementar, args=[contador, lock, c])
         hilos.append(hilo)
-     
 
-
-    
     return hilos
 
 
-def crear_hilos_50(cantidad: int, contador: int, lock: Lock,c) -> list():
+def crear_hilos_50(cantidad: int, contador: int, lock: Lock, c) -> list():
     hilos = []
     print("* Creando hilos...")
     for i in range(0, cantidad):
-        hilo = Process(target=incrementar, args=[contador, lock,c])
+        hilo = Process(target=incrementar, args=[contador, lock, c])
         hilos.append(hilo)
 
-        hilo = Process(target=decrementar, args=[contador, lock,c])
+        hilo = Process(target=decrementar, args=[contador, lock, c])
         hilos.append(hilo)
-     
-    
+
     return hilos
 
-def crear_hilos_20(cantidad: int, contador: int, lock: Lock,c) -> list():
+
+def crear_hilos_20(cantidad: int, contador: int, lock: Lock, c) -> list():
     hilos = []
     print("* Creando hilos...")
     for i in range(0, cantidad):
-        hilo = Process(target=incrementar, args=[contador, lock,c])
+        hilo = Process(target=incrementar, args=[contador, lock, c])
         hilos.append(hilo)
 
-        hilo = Process(target=decrementar, args=[contador, lock,c])
+        hilo = Process(target=decrementar, args=[contador, lock, c])
         hilos.append(hilo)
-     
-    
+
     return hilos
+
 
 def esperar_finalizacion_hilos(hilos):
     print("* Esperando finalización hilos...")
@@ -61,11 +58,11 @@ def esperar_finalizacion_hilos(hilos):
         h.join()
 
 
-def incrementar(contador: list, lock: Lock,c) -> None:
+def incrementar(contador: list, lock: Lock, c) -> None:
     # lo q hace el bucle es q cada hilo incremente 5 veces el contador
     # Si usamos with no es necesario usar adquire ni release
     # Se usa el modo blocking=True en adquire() ya que es el metodo por defecto
-    for i in range(0,c):
+    for i in range(0, c):
         with lock:
             # Región critica: Donde usamos el recurso compartido
             copia_contador = contador[0]
@@ -73,12 +70,11 @@ def incrementar(contador: list, lock: Lock,c) -> None:
             contador[0] = copia_contador + 1
             #print(Fore.RED + "+" + Fore.WHITE, end="")
 
-    
 
-def decrementar(contador: list, lock: Lock,c) -> None:
+def decrementar(contador: list, lock: Lock, c: int) -> None:
     # Si usamos with no es necesario usar adquire ni release
     # Se usa el modo blocking=True en adquire() ya que es el metodo por defecto
-    for x in range(0,c):
+    for x in range(0, c):
         with lock:
             # Región critica: Donde usamos el recurso compartido
             copia_contador = contador[0]
@@ -87,10 +83,9 @@ def decrementar(contador: list, lock: Lock,c) -> None:
             #print(Fore.YELLOW + "-" + Fore.WHITE, end="")
 
 
-
 def main() -> None:
     print()
-    print("MUCHOS HILOS ACCEDIENDO A UNA REGIÓN CRÍTICA")
+    print("MUCHOS PROCESOS ACCEDIENDO A UNA REGIÓN CRÍTICA")
     print("-"*40)
     print("· Al final el contador deberia ser 100")
     print()
@@ -100,17 +95,13 @@ def main() -> None:
 
     # Crear un objeto Lock para proteger región cr´tica
     lock = Lock()
-    
+
     # creamos la caantidad
     # Crear hilos
     hilos = []
-    hilos = crear_hilos_100(40, contador, lock,100)
-    hilos=crear_hilos_50(20,contador,lock,50)
-    hilos=crear_hilos_20(60,contador,lock,20)
-    
-
-
-
+    hilos = crear_hilos_100(40, contador, lock, 100)
+    hilos = crear_hilos_50(20, contador, lock, 50)
+    hilos = crear_hilos_20(60, contador, lock, 20)
 
     # Ejecutar hilos
     arrancar_hilos(hilos)
@@ -121,4 +112,3 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
