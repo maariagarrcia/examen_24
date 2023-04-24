@@ -1,5 +1,5 @@
 
-from multiprocessing import Process,Lock
+from multiprocessing import Process,Lock,Pool
 from colorama import Fore
 import time
 
@@ -107,7 +107,7 @@ def main() -> None:
     hilos = crear_hilos_100(40, contador, lock,100)
     hilos=crear_hilos_50(20,contador,lock,50)
     hilos=crear_hilos_20(60,contador,lock,20)
-
+    
 
 
 
